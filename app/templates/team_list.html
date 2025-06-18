@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NBA Team Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/styles.css') }}" />
+</head>
+<body>
+    <h1>NBA Teams</h1>
+    {% for team in teams %}
+    <div class="team">
+        <img src="{{ team.logo_url }}" alt="{{ team.name }} Logo">
+        <div class="team-info">
+          <div class="team-name">{{ team.name }} ({{ team.abbreviation }})</div>
+          <div class="team-stats">
+            Games Played: {{ team.games_played }} |
+            Wins: {{ team.wins }} |
+            Losses: {{ team.losses }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- templates/teams.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teams in League</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <h1>Teams in League {{ league_id }}</h1>
+  <ul>
+    {% for team in teams %}
+      <li>
+        {{ team.get('fullName') or team.get('name') }} ({{ team.get('abbreviation') }})
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('leagues.leagues') }}">Back to Leagues</a>
+</body>
+</html>

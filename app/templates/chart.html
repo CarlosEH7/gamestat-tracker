@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Score Trends</h1>
+    <div id="chart"></div>
+    <script>
+        var chartData = {{ chart_data | safe }};
+        Plotly.newPlot('chart', chartData.data, chartData.layout);
+    </script>
+</body>
+</html>

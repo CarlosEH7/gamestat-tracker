@@ -1,0 +1,21 @@
+<!-- templates/leagues.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leagues</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <h1>Basketball Leagues</h1>
+  <ul>
+    {% for league in leagues %}
+      <li>
+        <a href="{{ url_for('leagues.teams_by_league', league_key=league['key']) }}">
+          {{ league['name'] }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

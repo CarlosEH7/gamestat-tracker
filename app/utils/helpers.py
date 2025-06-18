@@ -1,0 +1,1 @@
+def format_score(score): return f"{score} pts"
