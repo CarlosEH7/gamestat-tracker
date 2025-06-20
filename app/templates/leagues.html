@@ -1,9 +1,8 @@
-<!-- templates/leagues.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Leagues</title>
+  <title>Basketball Leagues</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 </head>
 <body>
@@ -15,7 +14,10 @@
           {{ league['name'] }}
         </a>
       </li>
+    {% else %}
+      <li>No leagues found.</li>
     {% endfor %}
   </ul>
 </body>
 </html>
+

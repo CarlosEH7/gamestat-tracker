@@ -1,15 +1,16 @@
-from flask import Blueprint, render_template
-import requests
 import os
+import requests
+from flask import Blueprint, render_template
+from dotenv import load_dotenv
 
-# Load environment variables
+load_dotenv()
+
 RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
-RAPIDAPI_HOST = os.getenv("RAPIDAPI_HOST")
+RAPIDAPI_HOST = os.getenv("RAPIDAPI_HOST")  # e.g. "api-nba-v1.p.rapidapi.com"
 
-# Define the blueprint
-leagues_bp = Blueprint('leagues', __name__)
+leagues_bp = Blueprint("leagues", __name__)
 
-@leagues_bp.route('/leagues')
+@leagues_bp.route("/leagues")
 def leagues():
     url = "https://api-nba-v1.p.rapidapi.com/leagues"
     headers = {
@@ -18,35 +19,23 @@ def leagues():
     }
 
     try:
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
-        leagues_data = response.json().get("response", [])
+        res = requests.get(url, headers=headers, timeout=10)
+        res.raise_for_status()
+        data = res.json()
     except requests.RequestException as e:
-        print(f"Error fetching leagues: {e}")
-        leagues_data = []
+        print("Error fetching leagues:", e)
+        return render_template("leagues.html", leagues=[])
 
-    return render_template("leagues.html", leagues=leagues_data)
+    leagues = data.get("response", [])
 
-@leagues_bp.route('/leagues/<string:league_key>/teams')
-def teams_by_league(league_key):
-    url = "https://api-nba-v1.p.rapidapi.com/teams"
-    headers = {
-        "X-RapidAPI-Key": RAPIDAPI_KEY,
-        "X-RapidAPI-Host": RAPIDAPI_HOST
-    }
+    basketball_leagues = []
+    for league in leagues:
+        if isinstance(league, dict):
+            sport = league.get("sport")
+            if isinstance(sport, str) and sport.lower() == "basketball":
+                basketball_leagues.append(league)
 
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
-        teams = response.json().get("response", [])
 
-        filtered_teams = []
-        for team in teams:
-            if league_key in team.get("leagues", {}):
-                filtered_teams.append(team)
 
-    except requests.RequestException as e:
-        print(f"Error fetching teams by league: {e}")
-        filtered_teams = []
 
-    return render_template("teams.html", teams=filtered_teams, league_key=league_key)
+    return render_template("leagues.html", leagues=basketball_leagues)
